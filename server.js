@@ -11,43 +11,43 @@ app.use(cors());
 const todos = [];
 
 app.get('/', (req, res) => {
-    res.send('Hello World!');
+  res.send(todos);
 });
 
 app.post('/todos', (req, res) => {
-    const newTodo = { 
-        ...req.body,
-        id: Math.random(),
-        createdAt: new Date().getTime(),
-     };
-     todos.push(newTodo);
-    res.send(newTodo);
-    res.sendStatus(201);
+  const newTodo = {
+    ...req.body,
+    id: Math.random(),
+    createdAt: new Date().getTime(),
+  };
+  todos.push(newTodo);
+  res.send(todos);
+  res.sendStatus(201);
 });
 
 app.put('/todos', (req, res) => {
-     const todo = todos.find(({ id }) => req.body.id == id);
-     
-     todo.completed = req.body.completed;
-     todo.title = req.body.title;
+  const todo = todos.find(({ id }) => req.body.id == id);
 
-    res.send({ success: true });;
+  todo.completed = req.body.completed;
+  todo.title = req.body.title;
+
+  res.send({ success: true });
 });
 
 app.delete('/todos', (req, res) => {
-     const todoToRemoveIndex = todos.findIndex((todo) => {
-        return todo.id == req.body.id;
-     });
+  const todoToRemoveIndex = todos.findIndex((todo) => {
+    return todo.id == req.body.id;
+  });
 
-     todos.splice(todoToRemoveIndex, 1);
+  todos.splice(todoToRemoveIndex, 1);
 
-    res.send({ success: true });;
+  res.send({ success: true });
 });
 
 app.get('/todos', (req, res) => {
-    res.send(JSON.stringify(todos));
+  res.send(JSON.stringify(todos));
 });
 
 app.listen(8800, () => {
-    console.log('server is working');
+  console.log('server is working');
 });
