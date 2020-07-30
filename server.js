@@ -31,7 +31,8 @@ app.put('/todos', (req, res) => {
   todo.completed = req.body.completed;
   todo.title = req.body.title;
 
-  res.send({ success: true });
+  res.send(todo);
+  res.sendStatus(201);
 });
 
 app.delete('/todos', (req, res) => {
@@ -42,6 +43,7 @@ app.delete('/todos', (req, res) => {
   todos.splice(todoToRemoveIndex, 1);
 
   res.send({ success: true });
+  res.sendStatus(201);
 });
 
 app.get('/todos', (req, res) => {
