@@ -5,9 +5,8 @@ let valueInput = '';
 
 function App() {
   const [state, setState] = React.useState([]);
-  const [completede, setCompleted] = React.useState(false);
   const [succsess, setSuccsess] = React.useState(false);
-  // console.log(state);
+
   const input = React.useRef();
 
   const postData = () => {
@@ -34,7 +33,7 @@ function App() {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        id: id,
+        id,
       }),
     })
       .then((res) => res.json())
@@ -52,25 +51,22 @@ function App() {
       body: JSON.stringify({
         id,
         title,
-        completed,
+        completed: !completed,
       }),
     })
       .then((res) => res.json())
       .then((data) => {
-        // console.log(!data.completed);
-        // setState(data);
+        setState(data);
       });
-    // debugger;
   };
 
   React.useEffect(() => {
     fetch('http://localhost:8800/')
       .then((res) => res.json())
       .then((data) => {
-        // console.log(data);
         setState(data);
       });
-  }, [succsess, completede]);
+  }, [succsess]);
 
   return (
     <div className="App">
@@ -87,8 +83,13 @@ function App() {
         />
         <span
           onClick={() => {
-            postData(valueInput);
-            input.current.value = '';
+            if (valueInput) {
+              postData(valueInput);
+              input.current.value = '';
+              valueInput = '';
+            } else {
+              alert('Это поле не может быть пустым');
+            }
           }}
           className="addBtn">
           Add
@@ -99,9 +100,12 @@ function App() {
           <Items
             key={index}
             state={item}
-            deleteTodo={deleteTodo}
-            changeTodoStatus={changeTodoStatus}
-            completed={completede}
+            deleteTodo={(e) => {
+              if (e.target) {
+                deleteTodo(item.id);
+              }
+            }}
+            changeTodoStatus={() => changeTodoStatus(item)}
           />
         ))}
     </div>

@@ -31,7 +31,7 @@ app.put('/todos', (req, res) => {
   todo.completed = req.body.completed;
   todo.title = req.body.title;
 
-  res.send(todo);
+  res.send(todos);
   res.sendStatus(201);
 });
 
